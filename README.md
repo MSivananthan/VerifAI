@@ -92,6 +92,3 @@ Project Link: [https://github.com/yourusername/verifai-suite](https://github.com
 - [Google Fonts](https://fonts.google.com) for the typography
 - All contributors who helped improve this project
 
----
-
-This README was generated based on the content of the VerifAI Suite web application. Replace placeholder images with actual screenshots of your application for better representation.
