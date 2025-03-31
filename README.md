@@ -1,6 +1,6 @@
 # VerifAI Suite - Content Verification Tools
 
-![VerifAI Suite Screenshot](https://via.placeholder.com/800x500/4361ee/ffffff?text=VerifAI+Suite+Screenshot)
+![VerifAI](https://github.com/MSivananthan/VerifAI/blob/main/Screenshot%202025-03-31%20204839.png)
 
 VerifAI Suite is a comprehensive web application that provides advanced tools for code plagiarism detection, AI content analysis, and text humanization. Designed for developers, educators, and content creators, this all-in-one solution helps maintain content integrity and authenticity.
 
