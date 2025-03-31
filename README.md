@@ -62,9 +62,9 @@ No installation required! VerifAI Suite runs directly in your web browser. Simpl
 
 ## Screenshots
 
-![Code Plagiarism Checker](https://via.placeholder.com/400x250/3a0ca3/ffffff?text=Code+Plagiarism+Checker)
-![AI Content Detector](https://via.placeholder.com/400x250/f72585/ffffff?text=AI+Content+Detector)
-![Humanizer Tool](https://via.placeholder.com/400x250/4cc9f0/ffffff?text=Humanizer+Tool)
+![Code Plagiarism Checker](https://github.com/MSivananthan/VerifAI/blob/main/Screenshot%202025-03-31%20205307.png)
+![AI Content Detector](https://github.com/MSivananthan/VerifAI/blob/main/Screenshot%202025-03-31%20205344.png)
+![Humanizer Tool](https://github.com/MSivananthan/VerifAI/blob/main/Screenshot%202025-03-31%20205444.png)
 
 ## Contributing
 
