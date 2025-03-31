@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VerifAI Suite - Content Verification Tools</title>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+            --warning-color: #f8961e;
+            --danger-color: #ef233c;
+            --border-radius: 8px;
+            --box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --glass-effect: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            
+        }
+
+        /* Unique Brand Header */
+        .brand-header {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+        }
+
+        .brand-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 5rem 0 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
+            opacity: 0.3;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            position: relative;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        nav {
+            background-color: white;
+            margin: -1.5rem auto 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            width: 90%;
+            max-width: 1400px;
+            backdrop-filter: blur(10px);
+            background: var(--glass-effect);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        nav ul li a {
+            display: block;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            padding: 1.5rem;
+            transition: var(--transition);
+            font-weight: 500;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+
+        nav ul li a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        nav ul li a.active {
+            font-weight: 600;
+        }
+
+        nav ul li a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            width: 60%;
+            height: 4px;
+            background: rgb(57, 90, 174);
+            border-radius: 2px 2px 0 0;
+        }
+
+        nav ul li a i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+
+        .tool-section {
+            display: none;
+            margin-bottom: 3rem;
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            backdrop-filter: blur(5px);
+            background: var(--glass-effect);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .tool-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tool-section h2 {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid rgba(67, 97, 238, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+        }
+
+        .tool-section h2 i {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .tool-section p.description {
+            color: #555;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .tool-container {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .input-area, .results-area {
+            flex: 1;
+        }
+
+        .panel {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .panel h3 {
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel h3 i {
+            color: var(--primary-color);
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 1.5rem;
+            border: 1px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            resize: none;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+        }
+
+        .btn:hover::after {
+            transform: translateX(100%);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn.secondary:hover {
+            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+        }
+
+        .btn.danger {
+            background: linear-gradient(135deg, var(--danger-color), #c1121f);
+            box-shadow: 0 4px 15px rgba(239, 35, 60, 0.3);
+        }
+
+        .btn.danger:hover {
+            box-shadow: 0 8px 25px rgba(239, 35, 60, 0.4);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .results-box {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            min-height: 300px;
+            overflow-y: auto;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            background: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+        }
+
+        .placeholder {
+            color: #adb5bd;
+            font-style: italic;
+            text-align: center;
+            padding: 3rem 0;
+            font-size: 1.1rem;
+        }
+
+        .result-meter {
+            margin-bottom: 2rem;
+        }
+
+        .meter-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .meter-track {
+            height: 12px;
+            background-color: #e9ecef;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 0.75rem;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--warning-color));
+            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 6px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-group {
+            margin-bottom: 0;
+        }
+
+        .option-group label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            color: var(--dark-color);
+            font-size: 0.95rem;
+        }
+
+        .option-group select, 
+        .option-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid #e0e0e0;
+            font-family: inherit;
+            background: rgba(255, 255, 255, 0.8);
+            transition: var(--transition);
+        }
+
+        .option-group select:focus, 
+        .option-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 1.5rem;
+            position: relative;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 50%;
+            width: 1px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-weight: bold;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .diff-added {
+            background-color: rgba(76, 201, 240, 0.2);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .diff-removed {
+            background-color: rgba(239, 35, 60, 0.2);
+            text-decoration: line-through;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--dark-color), #343a40);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
+            opacity: 0.2;
+        }
+
+        footer .container {
+            position: relative;
+        }
+
+        footer p {
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+
+        .file-upload {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .file-upload input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 2rem;
+            border: 2px dashed #bdc3c7;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--primary-color);
+            background: rgba(67, 97, 238, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .file-upload-label i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .file-upload-label:hover i {
+            transform: scale(1.1);
+        }
+
+        .file-upload-label p {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .file-upload-label small {
+            color: #6c757d;
+            font-size: 0.85rem;
+        }
+
+        .match-highlight {
+            background-color: rgba(248, 150, 30, 0.2);
+            border-left: 3px solid var(--warning-color);
+            padding-left: 5px;
+            margin-left: -8px;
+        }
+
+        .language-selector {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .language-btn {
+            padding: 0.6rem 1.2rem;
+            background-color: #e9ecef;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .language-btn:hover {
+            background-color: #dee2e6;
+            transform: translateY(-2px);
+        }
+
+        .language-btn.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+        }
+
+        /* Floating particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(67, 97, 238, 0.1);
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .tool-container {
+                flex-direction: column;
+            }
+            
+            .input-area, .results-area {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 4rem 0 1.5rem;
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav ul li a {
+                padding: 1rem;
+            }
+            
+            .tool-section {
+                padding: 1.5rem;
+            }
+            
+            .panel {
+                padding: 1.5rem;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .brand-header {
+                top: 10px;
+                left: 10px;
+            }
+            
+            .brand-name {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .stat-item:not(:last-child)::after {
+                display: none;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Floating particles background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Unique Brand Name in Top Left -->
+    <div class="brand-header">
+        <div class="brand-logo">V</div>
+        <div class="brand-name">VerifAI</div>
+    </div>
+
+    <header>
+        <div class="container">
+            <h1>Welcome to VerifAI!</h1>
+            <p>Advanced tools for code plagiarism detection, AI content analysis, and text humanization</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container" style="color: #212529;">
+            <ul>
+                <li><a href="#" class="active" data-tab="plagiarism-checker"><i class="fas fa-code"></i> Code Check</a></li>
+                <li><a href="#" data-tab="ai-detector"><i class="fas fa-robot"></i> AI Detector</a></li>
+                <li><a href="#" data-tab="humanizer"><i class="fas fa-magic"></i> Humanizer</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Code Plagiarism Checker Tool -->
+        <section id="plagiarism-checker" class="tool-section active">
+            <h2><i class="fas fa-code"></i> Code Plagiarism Detection</h2>
+            <p class="description">Analyze source code for potential plagiarism across multiple programming languages with our advanced comparison algorithms.</p>
+            
+            <div class="tool-container">
+                <div class="input-area">
+                    <div class="panel">
+                        <h3><i class="fas fa-file-code"></i> Source Code Input</h3>
+                        <div class="language-selector">
+                            <button class="language-btn active" data-lang="javascript">JavaScript</button>
+                            <button class="language-btn" data-lang="python">Python</button>
+                            <button class="language-btn" data-lang="java">Java</button>
+                            <button class="language-btn" data-lang="cpp">C++</button>
+                        </div>
+                        <textarea id="source-code" placeholder="Paste your source code here...">function calculateFactorial(n) {
+    // Base case
+    if (n <= 1) return 1;
+    
+    // Recursive case
+    return n * calculateFactorial(n - 1);
+}</textarea>
+                        <div class="file-upload">
+                            <label for="upload-code" class="file-upload-label">
+                                <i class="fas fa-file-upload"></i>
+                                <p>Drag & Drop or Click to Upload</p>
+                                <small>Supports .js, .py, .java, .cpp files</small>
+                            </label>
+                            <input type="file" id="upload-code" accept=".js,.py,.java,.cpp,.c,.cs">
+                        </div>
+                        <div class="options-grid">
+                            <div class="option-group">
+                                <label for="check-mode"><i class="fas fa-cog"></i> Analysis Mode</label>
+                                <select id="check-mode">
+                                    <option value="standard">Standard Check</option>
+                                    <option value="advanced">Advanced Analysis</option>
+                                    <option value="strict">Strict Comparison</option>
+                                </select>
+                            </div>
+                            <div class="option-group">
+                                <label for="min-match"><i class="fas fa-ruler"></i> Minimum Match</label>
+                                <select id="min-match">
+                                    <option value="5">5 lines</option>
+                                    <option value="10" selected>10 lines</option>
+                                    <option value="15">15 lines</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button id="check-plagiarism" class="btn"><i class="fas fa-search"></i> Analyze Code</button>
+                    </div>
+                </div>
+                <div class="results-area">
+                    <div class="panel">
+                        <h3><i class="fas fa-chart-bar"></i> Plagiarism Report</h3>
+                        <div id="plagiarism-results" class="results-box">
+                            <p class="placeholder">Analysis results will appear here after processing your code</p>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <span class="stat-value" id="total-lines">0</span>
+                                <span class="stat-label">Total Lines</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="matched-lines">0</span>
+                                <span class="stat-label">Matched</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="similarity-score">0%</span>
+                                <span class="stat-label">Similarity</span>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button id="view-matches" class="btn secondary"><i class="fas fa-eye"></i> View Matches</button>
+                            <button id="export-report" class="btn"><i class="fas fa-file-pdf"></i> Export PDF</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Content Detector Tool -->
+        <section id="ai-detector" class="tool-section">
+            <h2><i class="fas fa-robot"></i> AI Content Detection</h2>
+            <p class="description">Identify AI-generated content with our sophisticated analysis algorithms that examine writing patterns and linguistic features.</p>
+            
+            <div class="tool-container">
+                <div class="input-area">
+                    <div class="panel">
+                        <h3><i class="fas fa-edit"></i> Content to Analyze</h3>
+                        <textarea id="ai-content" placeholder="Paste the content you want to analyze here..."></textarea>
+                        <div class="file-upload">
+                            <label for="upload-ai-content" class="file-upload-label">
+                                <i class="fas fa-file-alt"></i>
+                                <p>Drag & Drop or Click to Upload</p>
+                                <small>Supports .txt, .docx, .pdf files</small>
+                            </label>
+                            <input type="file" id="upload-ai-content" accept=".txt,.doc,.docx,.pdf">
+                        </div>
+                        <div class="options-grid">
+                            <div class="option-group">
+                                <label for="detection-model"><i class="fas fa-microscope"></i> Analysis Model</label>
+                                <select id="detection-model">
+                                    <option value="standard">Standard Detection</option>
+                                    <option value="advanced">Advanced Analysis</option>
+                                    <option value="plagiarism">Plagiarism Check</option>
+                                </select>
+                            </div>
+                            <div class="option-group">
+                                <label for="content-language"><i class="fas fa-language"></i> Content Language</label>
+                                <select id="content-language">
+                                    <option value="en">English</option>
+                                    <option value="ar">Arabic</option>
+                                    <option value="fr">French</option>
+                                    <option value="es">Spanish</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button id="check-ai" class="btn"><i class="fas fa-search"></i> Analyze Content</button>
+                    </div>
+                </div>
+                <div class="results-area">
+                    <div class="panel">
+                        <h3><i class="fas fa-file-alt"></i> Analysis Report</h3>
+                        <div id="ai-results" class="results-box">
+                            <div class="result-meter">
+                                <div class="meter-labels">
+                                    <span>Human Written</span>
+                                    <span>AI Generated</span>
+                                </div>
+                                <div class="meter-track">
+                                    <div class="meter-fill" style="width: 50%;"></div>
+                                </div>
+                                <div style="text-align: center; font-weight: bold; margin-top: 0.5rem;" id="ai-percentage">50% AI Probability</div>
+                            </div>
+                            <div id="ai-details">
+                                <p class="placeholder">Detailed analysis results will appear here after processing</p>
+                            </div>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <span class="stat-value" id="word-count">0</span>
+                                <span class="stat-label">Words</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="sentences-count">0</span>
+                                <span class="stat-label">Sentences</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="ai-score">0%</span>
+                                <span class="stat-label">AI Score</span>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button id="save-analysis" class="btn secondary"><i class="fas fa-save"></i> Save Report</button>
+                            <button id="export-analysis" class="btn"><i class="fas fa-file-export"></i> Export Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Humanizer Tool -->
+        <section id="humanizer" class="tool-section">
+            <h2><i class="fas fa-magic"></i> AI to Human Converter</h2>
+            <p class="description">Transform AI-generated content into natural, human-like writing with customizable tone and style options.</p>
+            
+            <div class="tool-container">
+                <div class="input-area">
+                    <div class="panel">
+                        <h3><i class="fas fa-keyboard"></i> Original Content</h3>
+                        <textarea id="ai-to-human" placeholder="Paste AI-generated content here..."></textarea>
+                        <div class="options-grid">
+                            <div class="option-group">
+                                <label for="tone-select"><i class="fas fa-comment-dots"></i> Writing Tone</label>
+                                <select id="tone-select">
+                                    <option value="casual">Casual</option>
+                                    <option value="professional">Professional</option>
+                                    <option value="academic">Academic</option>
+                                    <option value="creative">Creative</option>
+                                    <option value="technical">Technical</option>
+                                </select>
+                            </div>
+                            <div class="option-group">
+                                <label for="complexity"><i class="fas fa-brain"></i> Complexity</label>
+                                <select id="complexity">
+                                    <option value="simple">Simple</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="advanced">Advanced</option>
+                                </select>
+                            </div>
+                            <div class="option-group">
+                                <label for="audience"><i class="fas fa-users"></i> Audience</label>
+                                <select id="audience">
+                                    <option value="general">General Public</option>
+                                    <option value="business">Business</option>
+                                    <option value="students">Students</option>
+                                    <option value="experts">Experts</option>
+                                </select>
+                            </div>
+                            <div class="option-group">
+                                <label for="variations"><i class="fas fa-random"></i> Variation</label>
+                                <select id="variations">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button id="humanize-btn" class="btn"><i class="fas fa-magic"></i> Humanize Content</button>
+                    </div>
+                </div>
+                <div class="results-area">
+                    <div class="panel">
+                        <h3><i class="fas fa-check-circle"></i> Humanized Output</h3>
+                        <div id="humanized-content" class="results-box">
+                            <p class="placeholder">Your humanized content will appear here</p>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <span class="stat-value" id="original-words">0</span>
+                                <span class="stat-label">Original Words</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="humanized-words">0</span>
+                                <span class="stat-label">Humanized Words</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="humanization-percent">0%</span>
+                                <span class="stat-label">Humanization</span>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button id="copy-humanized" class="btn secondary"><i class="fas fa-copy"></i> Copy Text</button>
+                            <button id="download-txt" class="btn"><i class="fas fa-file-alt"></i> Download TXT</button>
+                            <button id="download-report" class="btn secondary"><i class="fas fa-file-pdf"></i> PDF Report</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 VerifAI Suite. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create floating particles
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random properties
+                const size = Math.random() * 20 + 10;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100 + 100;
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 10 + 15;
+                const opacity = Math.random() * 0.2 + 0.1;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.opacity = opacity;
+                
+                particlesContainer.appendChild(particle);
+            }
+
+            // Tab switching functionality
+            const tabLinks = document.querySelectorAll('nav a');
+            const tabSections = document.querySelectorAll('.tool-section');
+            
+            tabLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links and sections
+                    tabLinks.forEach(l => l.classList.remove('active'));
+                    tabSections.forEach(s => s.classList.remove('active'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Show corresponding section
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // Code Plagiarism Checker functionality
+            const checkPlagiarismBtn = document.getElementById('check-plagiarism');
+            const sourceCode = document.getElementById('source-code');
+            const plagiarismResults = document.getElementById('plagiarism-results');
+            const totalLinesEl = document.getElementById('total-lines');
+            const matchedLinesEl = document.getElementById('matched-lines');
+            const similarityScoreEl = document.getElementById('similarity-score');
+            const languageBtns = document.querySelectorAll('.language-btn');
+            let currentLanguage = 'javascript';
+
+            // Language selection
+            languageBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    languageBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentLanguage = this.getAttribute('data-lang');
+                    updateCodePlaceholder();
+                });
+            });
+
+            function updateCodePlaceholder() {
+                const examples = {
+                    javascript: "function calculateFactorial(n) {\n    // Base case\n    if (n <= 1) return 1;\n    \n    // Recursive case\n    return n * calculateFactorial(n - 1);\n}",
+                    python: "def calculate_factorial(n):\n    # Base case\n    if n <= 1:\n        return 1\n    \n    # Recursive case\n    return n * calculate_factorial(n - 1)",
+                    java: "public int calculateFactorial(int n) {\n    // Base case\n    if (n <= 1) {\n        return 1;\n    }\n    \n    // Recursive case\n    return n * calculateFactorial(n - 1);\n}",
+                    cpp: "int calculateFactorial(int n) {\n    // Base case\n    if (n <= 1) {\n        return 1;\n    }\n    \n    // Recursive case\n    return n * calculateFactorial(n - 1);\n}"
+                };
+                sourceCode.value = examples[currentLanguage] || examples.javascript;
+            }
+
+            checkPlagiarismBtn.addEventListener('click', function() {
+                const code = sourceCode.value.trim();
+                const mode = document.getElementById('check-mode').value;
+                const minMatch = parseInt(document.getElementById('min-match').value);
+                
+                if (!code) {
+                    plagiarismResults.innerHTML = '<p class="error">Please enter code to analyze.</p>';
+                    return;
+                }
+                
+                // Calculate line count
+                const lineCount = code.split('\n').length;
+                totalLinesEl.textContent = lineCount;
+                
+                // Simulate analysis
+                plagiarismResults.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Analyzing code for plagiarism...</p>';
+                
+                setTimeout(() => {
+                    // Mock results - random matches between 0% and 50%
+                    const similarity = Math.floor(Math.random() * 50);
+                    const matchedLines = Math.floor(lineCount * (similarity / 100));
+                    
+                    matchedLinesEl.textContent = matchedLines;
+                    similarityScoreEl.textContent = `${similarity}%`;
+                    
+                    // Create mock matches
+                    const codeLines = code.split('\n');
+                    let highlightedCode = '';
+                    let matchCount = 0;
+                    
+                    codeLines.forEach((line, index) => {
+                        // Randomly mark some lines as matches (for demo)
+                        if (index % (10 - Math.floor(similarity/10)) === 0 && line.trim() !== '') {
+                            highlightedCode += `<div class="match-highlight">${line}</div>`;
+                            matchCount++;
+                        } else {
+                            highlightedCode += `<div>${line}</div>`;
+                        }
+                    });
+                    
+                    let resultsHTML = `
+                        <h4>Plagiarism Analysis Results</h4>
+                        <p>Found ${matchCount} matching code segments (${similarity}% similarity)</p>
+                        <div class="code-display">
+                            ${highlightedCode}
+                        </div>
+                        <h4>Potential Sources</h4>
+                        <ul>
+                            <li>GitHub repository: <strong>algorithm-examples/${currentLanguage}</strong> (32% match)</li>
+                            <li>Stack Overflow answer #${Math.floor(100000 + Math.random() * 900000)} (18% match)</li>
+                            <li>University course example (${Math.floor(5 + Math.random() * 15)}% match)</li>
+                        </ul>
+                    `;
+                    
+                    plagiarismResults.innerHTML = resultsHTML;
+                }, 2500);
+            });
+
+            // File upload for code
+            document.getElementById('upload-code').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    sourceCode.value = e.target.result;
+                    
+                    // Detect language from file extension
+                    const ext = file.name.split('.').pop().toLowerCase();
+                    const langMap = {
+                        'js': 'javascript',
+                        'py': 'python',
+                        'java': 'java',
+                        'cpp': 'cpp',
+                        'c': 'cpp',
+                        'cs': 'cpp'
+                    };
+                    
+                    if (langMap[ext]) {
+                        currentLanguage = langMap[ext];
+                        languageBtns.forEach(btn => {
+                            btn.classList.remove('active');
+                            if (btn.getAttribute('data-lang') === currentLanguage) {
+                                btn.classList.add('active');
+                            }
+                        });
+                    }
+                };
+                
+                reader.readAsText(file);
+            });
+
+            // AI Content Detector functionality
+            const checkAiBtn = document.getElementById('check-ai');
+            const aiContent = document.getElementById('ai-content');
+            const aiResults = document.getElementById('ai-results');
+            const meterFill = document.querySelector('.meter-fill');
+            const aiDetails = document.getElementById('ai-details');
+            const aiPercentage = document.getElementById('ai-percentage');
+            const wordCountEl = document.getElementById('word-count');
+            const sentencesCountEl = document.getElementById('sentences-count');
+            const aiScoreEl = document.getElementById('ai-score');
+            
+            checkAiBtn.addEventListener('click', function() {
+                const content = aiContent.value.trim();
+                const model = document.getElementById('detection-model').value;
+                const language = document.getElementById('content-language').value;
+                
+                if (!content) {
+                    aiDetails.innerHTML = '<p class="error">Please enter content to analyze.</p>';
+                    return;
+                }
+                
+                // Calculate basic stats
+                const wordCount = content.trim() === '' ? 0 : content.trim().split(/\s+/).length;
+                const sentenceCount = content.split(/[.!?]+/).length - 1;
+                
+                wordCountEl.textContent = wordCount;
+                sentencesCountEl.textContent = sentenceCount;
+                
+                // Simulate analysis
+                aiDetails.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Analyzing content patterns...</p>';
+                
+                setTimeout(() => {
+                    // Mock analysis - random result between 0% and 100%
+                    const aiProbability = Math.floor(Math.random() * 100);
+                    meterFill.style.width = `${aiProbability}%`;
+                    aiPercentage.textContent = `${aiProbability}% AI Probability`;
+                    aiScoreEl.textContent = `${aiProbability}%`;
+                    
+                    let analysisText = '';
+                    if (aiProbability < 20) {
+                        analysisText = `<p>This content appears to be <strong class="success">mostly human-written</strong> (${aiProbability}% AI probability).</p>`;
+                    } else if (aiProbability < 60) {
+                        analysisText = `<p>This content shows <strong class="warning">some signs of AI generation</strong> (${aiProbability}% AI probability).</p>`;
+                    } else {
+                        analysisText = `<p>This content is <strong class="error">likely AI-generated</strong> (${aiProbability}% AI probability).</p>`;
+                    }
+                    
+                    analysisText += `
+                        <h4>Detailed Analysis (${model === 'advanced' ? 'Advanced Model' : 'Standard Model'})</h4>
+                        <ul>
+                            <li>Perplexity score: ${Math.floor(Math.random() * 50) + 50}</li>
+                            <li>Burstiness score: ${Math.floor(Math.random() * 50) + 50}</li>
+                            <li>Repetition patterns: ${Math.random() > 0.5 ? 'Low' : 'Moderate'}</li>
+                            <li>Vocabulary diversity: ${Math.random() > 0.5 ? 'High' : 'Medium'}</li>
+                            ${model === 'advanced' ? '<li>Semantic coherence: ' + (Math.random() > 0.5 ? 'High' : 'Medium') + '</li>' : ''}
+                            ${model === 'advanced' ? '<li>Syntactic patterns: ' + (Math.random() > 0.5 ? 'Natural' : 'Formulaic') + '</li>' : ''}
+                        </ul>
+                        <h4>Recommendations</h4>
+                        <p>${aiProbability < 50 ? 'This content appears authentic but could benefit from more personal anecdotes or examples.' : 'Consider rewriting sections with more original phrasing and personal insights.'}</p>
+                    `;
+                    
+                    aiDetails.innerHTML = analysisText;
+                }, 2500);
+            });
+
+            // Humanizer functionality
+            const humanizeBtn = document.getElementById('humanize-btn');
+            const aiToHuman = document.getElementById('ai-to-human');
+            const humanizedContent = document.getElementById('humanized-content');
+            const toneSelect = document.getElementById('tone-select');
+            const complexitySelect = document.getElementById('complexity');
+            const audienceSelect = document.getElementById('audience');
+            const variationsSelect = document.getElementById('variations');
+            const copyBtn = document.getElementById('copy-humanized');
+            const downloadTxtBtn = document.getElementById('download-txt');
+            const downloadReportBtn = document.getElementById('download-report');
+            const originalWordsEl = document.getElementById('original-words');
+            const humanizedWordsEl = document.getElementById('humanized-words');
+            const humanizationPercentEl = document.getElementById('humanization-percent');
+
+            // Word count function
+            function countWords(text) {
+                return text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            }
+
+            humanizeBtn.addEventListener('click', function() {
+                const content = aiToHuman.value.trim();
+                const tone = toneSelect.value;
+                const complexity = complexitySelect.value;
+                const audience = audienceSelect.value;
+                const variations = variationsSelect.value;
+                
+                if (!content) {
+                    humanizedContent.innerHTML = '<p class="error">Please enter content to humanize.</p>';
+                    return;
+                }
+                
+                // Calculate original word count
+                const originalWordCount = countWords(content);
+                originalWordsEl.textContent = originalWordCount;
+                
+                // Show processing message
+                humanizedContent.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Humanizing content...</p>';
+                
+                setTimeout(() => {
+                    // Apply transformations
+                    let humanizedText = content;
+                    
+                    // Simple transformations for demo
+                    humanizedText = humanizedText.replace(/utilize/gi, 'use');
+                    humanizedText = humanizedText.replace(/commence/gi, 'start');
+                    humanizedText = humanizedText.replace(/individual/gi, 'person');
+                    humanizedText = humanizedText.replace(/endeavor/gi, 'try');
+                    humanizedText = humanizedText.replace(/approximately/gi, 'about');
+                    
+                    // Add some variability
+                    humanizedText = humanizedText.split('. ').map(sentence => {
+                        if (Math.random() > 0.7) {
+                            return "Basically, " + sentence;
+                        }
+                        return sentence;
+                    }).join('. ');
+                    
+                    // Calculate humanization metrics
+                    const humanizedWordCount = countWords(humanizedText);
+                    const humanizationPercent = Math.floor(Math.random() * 30) + 70; // 70-100%
+                    
+                    // Update stats
+                    humanizedWordsEl.textContent = humanizedWordCount;
+                    humanizationPercentEl.textContent = `${humanizationPercent}%`;
+                    
+                    // Display the humanized content
+                    humanizedContent.innerHTML = `
+                        <p>${humanizedText}</p>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <span class="stat-value">${originalWordCount}</span>
+                                <span class="stat-label">Original Words</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value">${humanizedWordCount}</span>
+                                <span class="stat-label">Humanized Words</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value">${humanizationPercent}%</span>
+                                <span class="stat-label">Humanization</span>
+                            </div>
+                        </div>
+                    `;
+                }, 2000);
+            });
+
+            // Copy functionality
+            copyBtn.addEventListener('click', function() {
+                const content = humanizedContent.textContent;
+                if (!content || content.includes('Your humanized content will appear here')) {
+                    alert('No content to copy!');
+                    return;
+                }
+                
+                navigator.clipboard.writeText(content)
+                    .then(() => {
+                        const originalText = copyBtn.textContent;
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        setTimeout(() => {
+                            copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Text';
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
+            });
+
+            // Download TXT functionality
+            downloadTxtBtn.addEventListener('click', function() {
+                const content = humanizedContent.textContent;
+                if (!content || content.includes('Your humanized content will appear here')) {
+                    alert('No content to download!');
+                    return;
+                }
+                
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'humanized-content.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+
+            // Download Report functionality
+            downloadReportBtn.addEventListener('click', function() {
+                const content = humanizedContent.textContent;
+                if (!content || content.includes('Your humanized content will appear here')) {
+                    alert('No content to download!');
+                    return;
+                }
+                
+                const originalContent = aiToHuman.value;
+                const originalWordCount = document.getElementById('original-words').textContent;
+                const humanizedWordCount = document.getElementById('humanized-words').textContent;
+                const humanizationPercent = document.getElementById('humanization-percent').textContent;
+                const tone = document.getElementById('tone-select').options[document.getElementById('tone-select').selectedIndex].text;
+                const complexity = document.getElementById('complexity').options[document.getElementById('complexity').selectedIndex].text;
+                const audience = document.getElementById('audience').options[document.getElementById('audience').selectedIndex].text;
+                
+                const reportContent = `
+Content Humanization Report
+===========================
+
+Original Word Count: ${originalWordCount}
+Humanized Word Count: ${humanizedWordCount}
+Humanization Percentage: ${humanizationPercent}
+
+Settings:
+- Tone: ${tone}
+- Complexity: ${complexity}
+- Audience: ${audience}
+
+Original Content:
+----------------
+${originalContent}
+
+
+Humanized Content:
+-----------------
+${content.trim()}
+                `;
+                
+                const blob = new Blob([reportContent], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'humanization-report.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        });
+    </script>
+</body>
+</html>
